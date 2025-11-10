@@ -24,6 +24,8 @@ type EditHabitDialogProps = {
   onDelete: (habitId: string) => void
 }
 
+type Frequency = "daily" | "weekly" | "monthly"
+
 const colorOptions = [
   { label: "Green", value: "#10b981" },
   { label: "Blue", value: "#3b82f6" },
@@ -40,6 +42,12 @@ export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete 
   const [frequency, setFrequency] = useState(habit.frequency)
   const [color, setColor] = useState(habit.color)
   const [time, setTime] = useState(habit.time)
+
+  const handleFrequencyChange = (value: string) => {
+    if (value === "daily" || value === "weekly" || value === "monthly") {
+      setFrequency(value)
+    }
+  }
 
   const handleSave = () => {
     onSave({
@@ -74,7 +82,7 @@ export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete 
           </div>
           <div className="grid gap-2">
             <Label htmlFor="frequency">Frequency</Label>
-            <Select value={frequency} onValueChange={(value: any) => setFrequency(value)}>
+            <Select value={frequency} onValueChange={handleFrequencyChange}>
               <SelectTrigger id="frequency">
                 <SelectValue />
               </SelectTrigger>

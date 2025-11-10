@@ -40,7 +40,6 @@ export function HabitGrid({ habit }: HabitGridProps) {
     return `rgba(${r}, ${g}, ${b}, ${opacity})`
   }
 
-  const monthLabels = []
   let currentMonth = ""
   const monthPositions: { label: string; position: number }[] = []
 
@@ -66,7 +65,7 @@ export function HabitGrid({ habit }: HabitGridProps) {
               className="text-xs text-muted-foreground"
               style={{
                 width: `${12}px`,
-                marginLeft: idx === 0 ? 0 : `${(month.position - (monthPositions[idx - 1]?.position || 0) - 1) * 13}px`,
+                marginLeft: idx === 0 ? 0 : `${(month.position - (monthPositions[idx - 1]?.position ?? 0) - 1) * 13}px`,
               }}
             >
               {month.label}
@@ -85,7 +84,7 @@ export function HabitGrid({ habit }: HabitGridProps) {
             <div key={weekIndex} className="flex flex-col gap-1">
               {Array.from({ length: daysPerWeek }).map((_, dayIndex) => {
                 const dateStr = getDateForCell(weekIndex, dayIndex)
-                const completions = habit.completions[dateStr] || 0
+                const completions = habit.completions[dateStr] ?? 0
                 const intensity = getIntensity(completions)
                 const color = getColorForIntensity(intensity, habit.color)
 
