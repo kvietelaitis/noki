@@ -6,6 +6,7 @@ import { Card } from "~/components/ui/card"
 import { HabitGrid } from "~/components/habit-grid"
 import { EditHabitDialog } from "~/components/edit-habit-dialog"
 import { Plus } from "lucide-react"
+import { log } from "console"
 
 export type Habit = {
   id: string

@@ -35,6 +35,7 @@ const colorOptions = [
   { label: "Red", value: "#ef4444" },
   { label: "Pink", value: "#ec4899" },
   { label: "Yellow", value: "#eab308" },
+  { label: "Gray", value: "#6b7280" },
 ]
 
 export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete }: EditHabitDialogProps) {
