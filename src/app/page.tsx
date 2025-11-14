@@ -5,8 +5,7 @@ import { Button } from "~/components/ui/button"
 import { Card } from "~/components/ui/card"
 import { HabitGrid } from "~/components/habit-grid"
 import { EditHabitDialog } from "~/components/edit-habit-dialog"
-import { Plus } from "lucide-react"
-import { log } from "console"
+import { Plus, Settings } from "lucide-react"
 
 export type Habit = {
   id: string
@@ -140,8 +139,7 @@ export default function Page() {
       <div className="mx-auto max-w-7xl space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Habit Tracker</h1>
-            <p className="text-muted-foreground">Track your daily habits with a visual commit graph</p>
+            <h1 className="text-3xl font-bold tracking-tight">noki</h1>
           </div>
           <Button onClick={handleNewHabit} className="gap-2">
             <Plus className="h-4 w-4" />
@@ -175,7 +173,7 @@ export default function Page() {
                         setIsNewHabit(false)
                       }}
                     >
-                      Edit
+                      <Settings className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
