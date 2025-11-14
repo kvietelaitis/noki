@@ -5,14 +5,14 @@ import { Button } from "~/components/ui/button"
 import { Card } from "~/components/ui/card"
 import { HabitGrid } from "~/components/habit-grid"
 import { EditHabitDialog } from "~/components/edit-habit-dialog"
-import { Plus, Settings } from "lucide-react"
+import { Check, Plus, Settings } from "lucide-react"
 
 export type Habit = {
   id: string
   name: string
   color: string
   frequency: "daily" | "weekly" | "monthly"
-  time: string
+  scheduledTime: string
   completions: Record<string, number> // date -> completion count
 }
 
@@ -45,7 +45,7 @@ const generateMockData = (): Habit[] => {
       name: "Morning Meditation",
       color: "#10b981",
       frequency: "daily",
-      time: "07:00",
+      scheduledTime: "07:00",
       completions: getRandomCompletions(),
     },
     {
@@ -53,7 +53,7 @@ const generateMockData = (): Habit[] => {
       name: "Exercise",
       color: "#3b82f6",
       frequency: "daily",
-      time: "06:30",
+      scheduledTime: "06:30",
       completions: getRandomCompletions(),
     },
     {
@@ -61,7 +61,7 @@ const generateMockData = (): Habit[] => {
       name: "Read for 30min",
       color: "#8b5cf6",
       frequency: "daily",
-      time: "21:00",
+      scheduledTime: "21:00",
       completions: getRandomCompletions(),
     },
     {
@@ -69,7 +69,7 @@ const generateMockData = (): Habit[] => {
       name: "Drink 8 glasses of water",
       color: "#06b6d4",
       frequency: "daily",
-      time: "09:00",
+      scheduledTime: "09:00",
       completions: getRandomCompletions(),
     },
   ]
@@ -121,7 +121,7 @@ export default function Page() {
       name: "New Habit",
       color: "#f59e0b",
       frequency: "daily",
-      time: "09:00",
+      scheduledTime: "09:00",
       completions: {},
     }
     setEditingHabit(newHabit)
@@ -136,7 +136,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="mx-auto max-w-7xl space-y-8">
+      <div className="mx-auto max-w-7xl space-y-8 min-w-sm">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">noki</h1>
@@ -158,12 +158,12 @@ export default function Page() {
                       <h3 className="font-semibold text-lg">{habit.name}</h3>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {habit.frequency.charAt(0).toUpperCase() + habit.frequency.slice(1)} • {habit.time}
+                      {habit.frequency.charAt(0).toUpperCase() + habit.frequency.slice(1)} • {habit.scheduledTime}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button onClick={() => handleCompleteToday(habit.id)} size="sm">
-                      Complete Today
+                      <Check className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="outline"

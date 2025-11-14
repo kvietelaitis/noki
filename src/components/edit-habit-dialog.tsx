@@ -42,7 +42,7 @@ export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete 
   const [name, setName] = useState(habit.name)
   const [frequency, setFrequency] = useState(habit.frequency)
   const [color, setColor] = useState(habit.color)
-  const [time, setTime] = useState(habit.time)
+  const [scheduledTime, setTime] = useState(habit.scheduledTime)
 
   const handleFrequencyChange = (value: string) => {
     if (value === "daily" || value === "weekly" || value === "monthly") {
@@ -56,7 +56,7 @@ export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete 
       name,
       frequency,
       color,
-      time,
+      scheduledTime,
     })
   }
 
@@ -95,8 +95,8 @@ export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete 
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="time">Time</Label>
-            <Input id="time" type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+            <Label htmlFor="scheduledTime">Time</Label>
+            <Input id="time" type="time" value={scheduledTime} onChange={(e) => setTime(e.target.value)} />
           </div>
           <div className="grid gap-2">
             <Label>Color</Label>
