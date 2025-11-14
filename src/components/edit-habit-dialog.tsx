@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import type { Habit } from "~/app/page"
+import type { Habit } from "~/lib/mock-data"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,

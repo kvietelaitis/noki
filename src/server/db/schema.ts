@@ -8,5 +8,5 @@ export const habits = createTable("habits_table", {
   color: text('color').default("#6b7280"),
   frequency: singlestoreEnum(["daily", "weekly", "monthly"]),
   scheduledTime: time(),
-  completions: json().$type<{ date: string, completions: number }>(),
+  completions: json("completions").$type<Record<string, number>>().notNull()
 })
