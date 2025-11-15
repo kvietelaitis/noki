@@ -20,7 +20,7 @@ export function HabitRow(props: {
                       <h3 className="font-semibold text-lg">{habit.name}</h3>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {habit.frequency.charAt(0).toUpperCase() + habit.frequency.slice(1)} • {habit.scheduledTime}
+                      {habit.frequency.charAt(0).toUpperCase() + habit.frequency.slice(1)} • {habit.scheduledTime.slice(0, 5)}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">

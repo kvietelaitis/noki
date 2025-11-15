@@ -1,10 +1,8 @@
-import { db } from "~/server/db";
-import { habits_table as habitsSchema} from "~/server/db/schema";
-import { asc } from "drizzle-orm";
 import HabitContents from "./habit-contents";
+import { QUERIES } from "~/server/db/queries";
 
 export default async function Page() {
-  const habits = await db.select().from(habitsSchema).orderBy(asc(habitsSchema.id));
+  const habits = await QUERIES.getHabits();
 
   return <HabitContents habits={habits}/>
 }

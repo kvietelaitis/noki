@@ -22,7 +22,7 @@ type EditHabitDialogProps = {
   open: boolean
   onClose: () => void
   onSave: (habit: typeof habits_table.$inferSelect) => void
-  onDelete: (habitId: number) => void
+  onDelete: (habitId: bigint) => void
 }
 
 type Frequency = "daily" | "weekly" | "monthly"
@@ -97,7 +97,7 @@ export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete 
           </div>
           <div className="grid gap-2">
             <Label htmlFor="scheduledTime">Time</Label>
-            <Input id="time" type="time" value={scheduledTime} onChange={(e) => setTime(e.target.value)} />
+            <Input id="time" type="time" value={scheduledTime.slice(0, 5)} onChange={(e) => setTime(e.target.value)} />
           </div>
           <div className="grid gap-2">
             <Label>Color</Label>

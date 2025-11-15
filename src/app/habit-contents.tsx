@@ -6,13 +6,14 @@ import { EditHabitDialog } from "~/components/edit-habit-dialog"
 import { Plus } from "lucide-react"
 import type { habits_table } from "~/server/db/schema";
 import { HabitRow } from "./habit-row"
+import { addCompletion, deleteHabit, insertHabit, updateHabit } from "./actions"
 
 export default function HabitContents(props: {habits: typeof habits_table.$inferSelect[]}) {
   const [allHabits, setHabits] = useState<typeof habits_table.$inferSelect[]>(props.habits)
   const [editingHabit, setEditingHabit] = useState<typeof habits_table.$inferSelect| null>(null)
   const [isNewHabit, setIsNewHabit] = useState(false)
 
-  const handleCompleteToday = (habitId: number) => {
+  const handleCompleteToday = async (habitId: bigint) => {
     const today = new Date().toISOString().split("T")[0]
 
     if(!today) {
@@ -35,13 +36,19 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
         return h
       }),
     )
+
+    await addCompletion(habitId, today);
   }
 
-  const handleSaveHabit = (habit: typeof habits_table.$inferSelect) => {
+  const handleSaveHabit = async (habit: typeof habits_table.$inferSelect) => {
     if (isNewHabit) {
-      setHabits([...allHabits, habit])
+      const { id, ...habitData} = habit
+      const newID = await insertHabit(habitData)
+      const updatedHabit = { ...habitData, id: BigInt(newID) }
+      setHabits([...allHabits, updatedHabit])
     } else {
       setHabits(allHabits.map((h) => (h.id === habit.id ? habit : h)))
+      await updateHabit(habit)
     }
     setEditingHabit(null)
     setIsNewHabit(false)
@@ -49,21 +56,22 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
 
   const handleNewHabit = () => {
     const newHabit: typeof habits_table.$inferSelect = {
-      id: 1,
+      id: BigInt(-1),
       name: "New Habit",
       color: "#f59e0b",
       frequency: "daily",
-      scheduledTime: "09:00",
+      scheduledTime: "09:00:00",
       completions: {},
     }
     setEditingHabit(newHabit)
     setIsNewHabit(true)
   }
 
-  const handleDeleteHabit = (habitId: number) => {
+  const handleDeleteHabit = async (habitId: bigint) => {
     setHabits(allHabits.filter((h) => h.id !== habitId))
     setEditingHabit(null)
     setIsNewHabit(false)
+    await deleteHabit(habitId)
   }
 
   return (
