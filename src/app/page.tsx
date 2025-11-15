@@ -1,5 +1,5 @@
 import { db } from "~/server/db";
-import { habits as habitsSchema} from "~/server/db/schema";
+import { habits_table as habitsSchema} from "~/server/db/schema";
 import { asc } from "drizzle-orm";
 import HabitContents from "./habit-contents";
 

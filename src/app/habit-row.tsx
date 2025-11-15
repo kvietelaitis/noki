@@ -1,14 +1,13 @@
-//import type { Habit } from "~/app/shared.types"
-import type { habits } from "~/server/db/schema";
+import type { habits_table } from "~/server/db/schema";
 import { Card } from "~/components/ui/card"
 import { HabitGrid } from "~/components/habit-grid"
 import { Check, Settings } from "lucide-react"
 import { Button } from "~/components/ui/button";
 
 export function HabitRow(props: {
-    habit: typeof habits.$inferSelect
-    onComplete: (id: typeof habits.$inferSelect["id"]) => void
-    onEdit: (h: typeof habits.$inferSelect) => void
+    habit: typeof habits_table.$inferSelect
+    onComplete: (id: typeof habits_table.$inferSelect["id"]) => void
+    onEdit: (h: typeof habits_table.$inferSelect) => void
 }) {
     const { habit, onComplete, onEdit } = props;
     return (

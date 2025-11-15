@@ -4,7 +4,7 @@ import { int, bigint, text, time, singlestoreEnum, json, singlestoreTable, seria
 
 export const createTable = singlestoreTableCreator((name) => `noki_${name}`)
 
-export const habits = createTable("habits_table", {
+export const habits_table = createTable("habits_table", {
   id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   color: text('color').default("#6b7280").notNull(),

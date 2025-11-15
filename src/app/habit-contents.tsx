@@ -4,13 +4,12 @@ import { useState } from "react"
 import { Button } from "~/components/ui/button"
 import { EditHabitDialog } from "~/components/edit-habit-dialog"
 import { Plus } from "lucide-react"
-//import type { Habit } from "~/app/shared.types"
-import type { habits } from "~/server/db/schema";
+import type { habits_table } from "~/server/db/schema";
 import { HabitRow } from "./habit-row"
 
-export default function HabitContents(props: {habits: typeof habits.$inferSelect[]}) {
-  const [allHabits, setHabits] = useState<typeof habits.$inferSelect[]>(props.habits)
-  const [editingHabit, setEditingHabit] = useState<typeof habits.$inferSelect| null>(null)
+export default function HabitContents(props: {habits: typeof habits_table.$inferSelect[]}) {
+  const [allHabits, setHabits] = useState<typeof habits_table.$inferSelect[]>(props.habits)
+  const [editingHabit, setEditingHabit] = useState<typeof habits_table.$inferSelect| null>(null)
   const [isNewHabit, setIsNewHabit] = useState(false)
 
   const handleCompleteToday = (habitId: number) => {
@@ -38,7 +37,7 @@ export default function HabitContents(props: {habits: typeof habits.$inferSelect
     )
   }
 
-  const handleSaveHabit = (habit: typeof habits.$inferSelect) => {
+  const handleSaveHabit = (habit: typeof habits_table.$inferSelect) => {
     if (isNewHabit) {
       setHabits([...allHabits, habit])
     } else {
@@ -49,7 +48,7 @@ export default function HabitContents(props: {habits: typeof habits.$inferSelect
   }
 
   const handleNewHabit = () => {
-    const newHabit: typeof habits.$inferSelect = {
+    const newHabit: typeof habits_table.$inferSelect = {
       id: 1,
       name: "New Habit",
       color: "#f59e0b",

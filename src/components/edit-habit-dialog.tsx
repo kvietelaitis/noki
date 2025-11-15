@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 //import type { Habit } from "~/app/shared.types"
-import type { habits } from "~/server/db/schema"
+import type { habits_table } from "~/server/db/schema"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -17,11 +17,11 @@ import { Label } from "~/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
 
 type EditHabitDialogProps = {
-  habit: typeof habits.$inferSelect
+  habit: typeof habits_table.$inferSelect
   isNew: boolean
   open: boolean
   onClose: () => void
-  onSave: (habit: typeof habits.$inferSelect) => void
+  onSave: (habit: typeof habits_table.$inferSelect) => void
   onDelete: (habitId: number) => void
 }
 
