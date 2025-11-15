@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import type { Habit } from "~/lib/mock-data"
+//import type { Habit } from "~/app/shared.types"
+import type { habits } from "~/server/db/schema"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -16,12 +17,12 @@ import { Label } from "~/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
 
 type EditHabitDialogProps = {
-  habit: Habit
+  habit: typeof habits.$inferSelect
   isNew: boolean
   open: boolean
   onClose: () => void
-  onSave: (habit: Habit) => void
-  onDelete: (habitId: string) => void
+  onSave: (habit: typeof habits.$inferSelect) => void
+  onDelete: (habitId: number) => void
 }
 
 type Frequency = "daily" | "weekly" | "monthly"

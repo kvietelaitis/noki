@@ -1,6 +1,6 @@
 "use client"
 
-import type { Habit } from "~/app/page"
+import type { Habit } from "~/app/shared.types"
 
 type HabitGridProps = {
   habit: Habit
