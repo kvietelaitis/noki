@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "~/components/ui/button"
 import { EditHabitDialog } from "~/components/edit-habit-dialog"
 import { Plus } from "lucide-react"
@@ -8,12 +8,15 @@ import type { habits_table } from "~/server/db/schema";
 import { HabitRow } from "./habit-row"
 import { addCompletion, deleteHabit, insertHabit, updateHabit } from "./actions"
 import { useTheme } from "~/app/context/ThemeContext"
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 
 export default function HabitContents(props: {habits: typeof habits_table.$inferSelect[]}) {
-  const [allHabits, setHabits] = useState<typeof habits_table.$inferSelect[]>(props.habits)
   const [editingHabit, setEditingHabit] = useState<typeof habits_table.$inferSelect| null>(null)
   const [isNewHabit, setIsNewHabit] = useState(false)
   const { toggleTheme, darkMode } = useTheme()
+  const { user } = useUser()
+  const navigate = useRouter()
 
   const handleCompleteToday = async (habitId: bigint) => {
     const today = new Date().toISOString().split("T")[0]
@@ -22,43 +25,36 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
       console.error("Could not get today's date string")
       return
     }
-
-    setHabits(
-      allHabits.map((h) => {
-        if (h.id === habitId) {
-          const currentCount = h.completions[today] ?? 0
-          return {
-            ...h,
-            completions: {
-              ...h.completions,
-              [today]: currentCount + 1,
-            },
-          }
-        }
-        return h
-      }),
-    )
-
     await addCompletion(habitId, today);
+    navigate.refresh()
   }
 
   const handleSaveHabit = async (habit: typeof habits_table.$inferSelect) => {
     if (isNewHabit) {
       const { id, ...habitData} = habit
       const newID = await insertHabit(habitData)
-      const updatedHabit = { ...habitData, id: BigInt(newID) }
-      setHabits([...allHabits, updatedHabit])
+      navigate.refresh()
+      //const updatedHabit = { ...habitData, id: BigInt(newID) }
+      //setHabits([...allHabits, updatedHabit])
     } else {
-      setHabits(allHabits.map((h) => (h.id === habit.id ? habit : h)))
+      //setHabits(allHabits.map((h) => (h.id === habit.id ? habit : h)))
       await updateHabit(habit)
+      navigate.refresh()
     }
     setEditingHabit(null)
     setIsNewHabit(false)
   }
 
   const handleNewHabit = () => {
+
+    if(!user?.id) {
+      console.error("User is not authorized")
+      return
+    }
+
     const newHabit: typeof habits_table.$inferSelect = {
       id: BigInt(-1),
+      ownerId: user.id,
       name: "New Habit",
       color: "#f59e0b",
       frequency: "daily",
@@ -70,10 +66,11 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
   }
 
   const handleDeleteHabit = async (habitId: bigint) => {
-    setHabits(allHabits.filter((h) => h.id !== habitId))
+    //setHabits(allHabits.filter((h) => h.id !== habitId))
     setEditingHabit(null)
     setIsNewHabit(false)
     await deleteHabit(habitId)
+    navigate.refresh()
   }
 
   return (
@@ -91,11 +88,14 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
             <Button onClick={toggleTheme}>
               { darkMode ? "Light Mode" : "Dark Mode"}
             </Button>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </div>
         </div>
 
-        <div className="space-y-6">
-          {allHabits.map((habit) => (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          {props.habits.map((habit) => (
             <HabitRow
               key={habit.id.toString()}
               habit={habit}

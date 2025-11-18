@@ -5,8 +5,8 @@ import { habits_table as habitsSchema } from "~/server/db/schema";
 import { asc, eq } from "drizzle-orm";
 
 export const QUERIES = {
-    getHabits: function () {
-        return db.select().from(habitsSchema).orderBy(asc(habitsSchema.id));
+    getHabits: function (userId: string) {
+        return db.select().from(habitsSchema).where(eq(habitsSchema.ownerId, userId)).orderBy(asc(habitsSchema.id));
     },
     deleteHabit: async function (habitID: bigint) {
         return await db.delete(habitsSchema).where(eq(habitsSchema.id, BigInt(habitID)));
