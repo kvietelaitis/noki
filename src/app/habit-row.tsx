@@ -10,6 +10,7 @@ export function HabitRow(props: {
     onEdit: (h: typeof habits_table.$inferSelect) => void
 }) {
     const { habit, onComplete, onEdit } = props;
+
     return (
         <Card key={habit.id} className="p-6">
               <div className="space-y-4">

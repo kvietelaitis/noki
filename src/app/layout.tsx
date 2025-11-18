@@ -22,7 +22,7 @@ export default function RootLayout({
       <head>
         <meta
           name="viewport"
-          content="initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, minimum-scale=1.0"
+          content="width=device-width initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, minimum-scale=1.0"
         />
       </head>
       <body>{children}</body>

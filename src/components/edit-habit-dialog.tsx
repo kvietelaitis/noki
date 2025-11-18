@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-//import type { Habit } from "~/app/shared.types"
 import type { habits_table } from "~/server/db/schema"
 import { Button } from "~/components/ui/button"
 import {

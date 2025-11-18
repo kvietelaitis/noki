@@ -7,11 +7,13 @@ import { Plus } from "lucide-react"
 import type { habits_table } from "~/server/db/schema";
 import { HabitRow } from "./habit-row"
 import { addCompletion, deleteHabit, insertHabit, updateHabit } from "./actions"
+import { useTheme } from "~/app/context/ThemeContext"
 
 export default function HabitContents(props: {habits: typeof habits_table.$inferSelect[]}) {
   const [allHabits, setHabits] = useState<typeof habits_table.$inferSelect[]>(props.habits)
   const [editingHabit, setEditingHabit] = useState<typeof habits_table.$inferSelect| null>(null)
   const [isNewHabit, setIsNewHabit] = useState(false)
+  const { toggleTheme, darkMode } = useTheme()
 
   const handleCompleteToday = async (habitId: bigint) => {
     const today = new Date().toISOString().split("T")[0]
@@ -76,15 +78,20 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="mx-auto max-w-7xl space-y-8 min-w-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">noki</h1>
+      <div className="mx-auto max-w-7xl space-y-8 min-w-xs">
+        <div className="flex items-center">
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold tracking-tight dark:text-white">noki</h1>
           </div>
-          <Button onClick={handleNewHabit} className="gap-2">
-            <Plus className="h-4 w-4" />
-            New Habit
-          </Button>
+          <div className="flex gap-2 justify-center">
+            <Button onClick={handleNewHabit} className="gap-2">
+              <Plus className="h-4 w-4" />
+              New habit
+            </Button>
+            <Button onClick={toggleTheme}>
+              { darkMode ? "Light Mode" : "Dark Mode"}
+            </Button>
+          </div>
         </div>
 
         <div className="space-y-6">
