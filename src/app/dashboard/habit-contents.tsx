@@ -115,7 +115,7 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
           </div>
         </div>
 
-        <div className="space-y-6 max-w-4xl mx-auto pt-4">
+        <div className="space-y-6 max-w-4xl mx-auto pt-4 px-4 sm:px-6 lg:px-8">
           {props.habits.length > 0 ? 
           props.habits.map((habit) => (
             <HabitRow

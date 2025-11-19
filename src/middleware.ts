@@ -12,7 +12,7 @@ export default clerkMiddleware(async (auth, req) => {
         return NextResponse.redirect(new URL("/home", req.url))
     }
 
-    if (userId && req.nextUrl.pathname === "/home") {
+    if (userId && req.nextUrl.pathname === "/home" || req.nextUrl.pathname === "/") {
         return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
