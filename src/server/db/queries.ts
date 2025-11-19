@@ -21,7 +21,7 @@ export const QUERIES = {
         }
     },
     addCompletion: async function (habitID: bigint, date: string) {
-        const rows = await db.select().from(habitsSchema).where(eq(habitsSchema.id, BigInt(habitID)));
+        const rows = await db.select().from(habitsSchema).where(eq(habitsSchema.id, habitID));
         const row = rows[0];
 
         const listOfCompletions = row?.completions ?? {};

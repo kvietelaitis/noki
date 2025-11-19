@@ -3,20 +3,20 @@
 import { useEffect, useState } from "react"
 import { Button } from "~/components/ui/button"
 import { EditHabitDialog } from "~/components/edit-habit-dialog"
-import { Plus } from "lucide-react"
+import { Moon, Plus, Sun } from "lucide-react"
 import type { habits_table } from "~/server/db/schema";
-import { HabitRow } from "./habit-row"
-import { addCompletion, deleteHabit, insertHabit, updateHabit } from "./actions"
+import { HabitRow } from "../../components/habit-row"
+import { addCompletion, deleteHabit, insertHabit, updateHabit } from "../../server/db/actions"
 import { useTheme } from "~/app/context/ThemeContext"
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 
 export default function HabitContents(props: {habits: typeof habits_table.$inferSelect[]}) {
+  const [allHabits, setHabits] = useState(props.habits)
   const [editingHabit, setEditingHabit] = useState<typeof habits_table.$inferSelect| null>(null)
   const [isNewHabit, setIsNewHabit] = useState(false)
   const { toggleTheme, darkMode } = useTheme()
   const { user } = useUser()
-  const navigate = useRouter()
 
   const handleCompleteToday = async (habitId: bigint) => {
     const today = new Date().toISOString().split("T")[0]
@@ -25,21 +25,39 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
       console.error("Could not get today's date string")
       return
     }
-    await addCompletion(habitId, today);
-    navigate.refresh()
+
+    setHabits(
+      allHabits.map((h) => {
+        if (h.id === habitId) {
+          const currentCount = h.completions[today] ?? 0
+          return {
+            ...h,
+            completions: {
+              ...h.completions,
+              [today]: currentCount + 1,
+            },
+          }
+        }
+        return h
+      }),
+    )
+
+    const result = await addCompletion(habitId, today);
+
+    if(result.success != true) {
+      setHabits(allHabits)
+    }
   }
 
   const handleSaveHabit = async (habit: typeof habits_table.$inferSelect) => {
     if (isNewHabit) {
       const { id, ...habitData} = habit
-      const newID = await insertHabit(habitData)
-      navigate.refresh()
+      await insertHabit(habitData)
       //const updatedHabit = { ...habitData, id: BigInt(newID) }
       //setHabits([...allHabits, updatedHabit])
     } else {
       //setHabits(allHabits.map((h) => (h.id === habit.id ? habit : h)))
       await updateHabit(habit)
-      navigate.refresh()
     }
     setEditingHabit(null)
     setIsNewHabit(false)
@@ -70,7 +88,6 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
     setEditingHabit(null)
     setIsNewHabit(false)
     await deleteHabit(habitId)
-    navigate.refresh()
   }
 
   return (
@@ -83,26 +100,35 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
           <div className="flex gap-2 justify-center">
             <Button onClick={handleNewHabit} className="gap-2">
               <Plus className="h-4 w-4" />
-              New habit
+              New Habit
             </Button>
             <Button onClick={toggleTheme}>
-              { darkMode ? "Light Mode" : "Dark Mode"}
+              { darkMode ? <Sun /> : <Moon />}
             </Button>
             <SignedIn>
-              <UserButton />
+              <UserButton
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "size-8",
+                  },
+                }}
+              />
             </SignedIn>
           </div>
         </div>
 
-        <div className="space-y-6 max-w-4xl mx-auto">
-          {props.habits.map((habit) => (
+        <div className="space-y-6 max-w-4xl mx-auto pt-4">
+          {props.habits.length > 0 ? 
+          props.habits.map((habit) => (
             <HabitRow
               key={habit.id.toString()}
               habit={habit}
               onComplete={handleCompleteToday}
               onEdit={setEditingHabit}
             />
-          ))}
+          )) : 
+          <h1 className="flex justify-center pt-10 font-semibold text-lg">Add a new habit!</h1>
+          }
         </div>
       </div>
 
