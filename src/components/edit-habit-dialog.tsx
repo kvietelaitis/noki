@@ -24,8 +24,6 @@ type EditHabitDialogProps = {
   onDelete: (habitId: bigint) => void
 }
 
-type Frequency = "daily" | "weekly" | "monthly"
-
 const colorOptions = [
   { label: "Green", value: "#10b981" },
   { label: "Blue", value: "#3b82f6" },

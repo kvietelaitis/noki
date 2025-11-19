@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useState, useEffect, useContext, useMemo, useCallback, useRef } from "react";
+import React, { createContext, useState, useEffect, useContext, useMemo, useCallback} from "react";
 
 type ThemeContextType = {
     darkMode: boolean,
@@ -9,7 +9,9 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType>({
     darkMode: false,
-    toggleTheme: () => {},
+    toggleTheme: () => {
+        console.warn("toggleTheme is not setup")
+    },
 });
 
 export const useTheme = () => {
@@ -24,7 +26,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         setMounted(true);
         const saved = localStorage.getItem('darkMode');
         if (saved) {
-            setDarkMode(JSON.parse(saved));
+            setDarkMode(JSON.parse(saved) === "true" ? true : false);
         }
     }, []);
 
@@ -50,7 +52,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [darkMode]);
 
-    const value = useMemo(() => ({ darkMode, toggleTheme}), [darkMode]);
+    const value = useMemo(() => ({ darkMode, toggleTheme}), [darkMode, toggleTheme]);
 
     if (!mounted) {
         return null;

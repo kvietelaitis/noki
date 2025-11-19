@@ -3,8 +3,6 @@
 import { SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { ThemeProvider } from "../context/ThemeContext";
 import { Button } from "~/components/ui/button";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 
 export default function Home() {
     return (

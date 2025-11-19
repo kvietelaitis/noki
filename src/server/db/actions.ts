@@ -37,7 +37,7 @@ export async function insertHabit(habit: typeof habits_table.$inferInsert) {
         return { error: "Unauthorized" };
     }
 
-    await db.insert(habits_table).values(habit);
+    await db.insert(habits_table).values({ ownerId: session.userId, name: habit.name, color: habit.color, frequency: habit.frequency, scheduledTime: habit.scheduledTime, completions: habit.completions });
 
     const c = await cookies();
 

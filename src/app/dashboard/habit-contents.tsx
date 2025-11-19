@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Button } from "~/components/ui/button"
 import { EditHabitDialog } from "~/components/edit-habit-dialog"
 import { Moon, Plus, Sun } from "lucide-react"
@@ -8,8 +8,7 @@ import type { habits_table } from "~/server/db/schema";
 import { HabitRow } from "../../components/habit-row"
 import { addCompletion, deleteHabit, insertHabit, updateHabit } from "../../server/db/actions"
 import { useTheme } from "~/app/context/ThemeContext"
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
-import { useRouter } from "next/navigation"
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs"
 
 export default function HabitContents(props: {habits: typeof habits_table.$inferSelect[]}) {
   const [allHabits, setHabits] = useState(props.habits)
@@ -51,8 +50,7 @@ export default function HabitContents(props: {habits: typeof habits_table.$infer
 
   const handleSaveHabit = async (habit: typeof habits_table.$inferSelect) => {
     if (isNewHabit) {
-      const { id, ...habitData} = habit
-      await insertHabit(habitData)
+      await insertHabit(habit)
       //const updatedHabit = { ...habitData, id: BigInt(newID) }
       //setHabits([...allHabits, updatedHabit])
     } else {

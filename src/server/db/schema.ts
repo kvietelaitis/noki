@@ -1,6 +1,6 @@
 //import "server-only";
 
-import { int, bigint, text, time, singlestoreEnum, json, singlestoreTable, serial, singlestoreTableCreator, index } from "drizzle-orm/singlestore-core";
+import { bigint, text, time, singlestoreEnum, json, singlestoreTableCreator, index } from "drizzle-orm/singlestore-core";
 
 export const createTable = singlestoreTableCreator((name) => `noki_${name}`)
 

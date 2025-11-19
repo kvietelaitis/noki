@@ -91,7 +91,7 @@ export function HabitGrid(props: { habit: typeof habits_table.$inferSelect} ) {
                 <div key={weekIndex} className="flex flex-col gap-1">
                   {Array.from({ length: daysPerWeek }).map((_, dayIndex) => {
                     const dateStr = getDateForCell(weekIndex, dayIndex)
-                    const completions = (habit.completions as Record<string, number>)[dateStr] ?? 0
+                    const completions = habit.completions[dateStr] ?? 0
                     const intensity = getIntensity(completions)
                     const color = getColorForIntensity(intensity, habit.color)
 
