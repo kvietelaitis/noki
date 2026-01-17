@@ -26,15 +26,21 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         setMounted(true);
         const saved = localStorage.getItem('darkMode');
         if (saved) {
-            setDarkMode(JSON.parse(saved) === "true" ? true : false);
+            setDarkMode(JSON.parse(saved) as boolean);
         }
-    }, []);
 
-    useEffect(() => {
-        if (mounted) {
-            localStorage.setItem('darkMode', JSON.stringify(darkMode));
+        if(darkMode) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
         }
-    }, [darkMode, mounted]);
+    }, [darkMode]);
+
+    //useEffect(() => {
+    //    if (mounted) {
+    //        localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    //    }
+    //}, [darkMode, mounted]);
 
     const toggleTheme = useCallback(() => {
         setDarkMode((mode: boolean) => {
@@ -44,13 +50,13 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         });
     }, []);
 
-    useEffect(() => {
-        if(darkMode) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
-    }, [darkMode]);
+    //useEffect(() => {
+    //    if(darkMode) {
+    //        document.documentElement.classList.add("dark");
+    //    } else {
+    //        document.documentElement.classList.remove("dark");
+    //    }
+    //}, [darkMode]);
 
     const value = useMemo(() => ({ darkMode, toggleTheme}), [darkMode, toggleTheme]);
 

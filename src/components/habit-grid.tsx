@@ -4,7 +4,7 @@ import type { habits_table } from '~/server/db/schema'
 import { useEffect, useRef } from "react";
 
 export function HabitGrid(props: { habit: typeof habits_table.$inferSelect} ) {
-  const weeks = 53
+  const weeks = 32
   const daysPerWeek = 7
   const today = new Date()
   const habit = props.habit
@@ -51,41 +51,21 @@ export function HabitGrid(props: { habit: typeof habits_table.$inferSelect} ) {
     }
   }
 
-      const scrollableContainerRef = useRef<HTMLDivElement>(null)
+  const scrollableContainerRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-      const container = scrollableContainerRef.current;
-      if(container) {
-        container.scrollLeft = container.scrollWidth;
-      }
-    }, []);
+  useEffect(() => {
+    const container = scrollableContainerRef.current;
+    if(container) {
+      container.scrollLeft = container.scrollWidth;
+    }
+  }, []);
 
   return (
     <div className="space-y-2">
       <div className="flex gap-1">
-        <div className="flex flex-col justify-between py-1 text-xs text-muted-foreground w-8">
-          <span>Mon</span>
-          <span>Wed</span>
-          <span>Fri</span>
-        </div>
 
         <div ref={scrollableContainerRef} className="overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
-          <div className="space-y-1">
-            <div className="flex gap-1 h-5">
-              {monthPositions.map((month, idx) => (
-                <div
-                  key={idx}
-                  className="text-xs text-muted-foreground"
-                  style={{
-                    minWidth: '14px',
-                    marginLeft: idx === 0 ? 0 : `${(month.position - (monthPositions[idx - 1]?.position ?? 0) - 1) * 16}px`,
-                  }}
-                >
-                  {month.label}
-                </div>
-              ))}
-            </div>
-
+          <div className="space-y-1 p-2">
             <div className="flex gap-1">
               {Array.from({ length: weeks }).map((_, weekIndex) => (
                 <div key={weekIndex} className="flex flex-col gap-1">
@@ -98,7 +78,7 @@ export function HabitGrid(props: { habit: typeof habits_table.$inferSelect} ) {
                     return (
                       <div
                         key={dayIndex}
-                        className="h-4 w-4 shrink-0 rounded-none border border-border/40 transition-colors hover:ring-2 hover:ring-ring/20"
+                        className="h-5 w-5 shrink-0 rounded-none border border-border/60 transition-colors hover:ring-2 hover:ring-ring/20"
                         style={{ backgroundColor: color }}
                         title={`${dateStr}: ${completions} completion${completions !== 1 ? "s" : ""}`}
                       />

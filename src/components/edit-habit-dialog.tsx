@@ -14,6 +14,7 @@ import {
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
+import { HexColorInput, HexColorPicker } from "react-colorful";
 
 type EditHabitDialogProps = {
   habit: typeof habits_table.$inferSelect
@@ -98,23 +99,15 @@ export function EditHabitDialog({ habit, isNew, open, onClose, onSave, onDelete 
           </div>
           <div className="grid gap-2">
             <Label>Color</Label>
-            <div className="grid grid-cols-4 gap-2">
-              {colorOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  className={`h-10 rounded-md border-2 transition-all hover:scale-105 ${
-                    color === option.value ? "border-foreground ring-2 ring-ring" : "border-border"
-                  }`}
-                  style={{ backgroundColor: option.value }}
-                  onClick={() => setColor(option.value)}
-                  title={option.label}
-                />
-              ))}
+
+            <div className="flex flex-col items-center space-y-4 p-4">
+              <div className="responsive">
+                <HexColorPicker color={color} onChange={setColor}/>
+              </div>
             </div>
           </div>
         </div>
-        <DialogFooter className="gap-2 sm:gap-0">
+        <DialogFooter className="gap-2 sm:gap-2">
           {!isNew && (
             <Button type="button" variant="destructive" onClick={() => onDelete(habit.id)} className="sm:mr-auto">
               Delete
